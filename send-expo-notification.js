@@ -1,17 +1,11 @@
-// Endpoint to retrieve all registered Expo tokens
 // @ts-nocheck
 const express = require("express");
-const fetch = require("node-fetch");
 
 const app = express();
 app.use(express.json());
 
-const expoTokens = new Set(); // In-memory storage
+const expoTokens = new Set();
 
-// Register device token
-app.get("/expo-tokens", (req, res) => {
-  res.json({ tokens: Array.from(expoTokens) });
-});
 app.post("/register", (req, res) => {
   const { token } = req.body;
   if (!token || !token.startsWith("ExponentPushToken")) {
@@ -22,14 +16,14 @@ app.post("/register", (req, res) => {
   res.json({ success: true });
 });
 
-// Send notification to all registered tokens
 app.post("/send", async (req, res) => {
   const { title, body, data } = req.body;
+
   const messages = [...expoTokens].map(token => ({
     to: token,
     sound: "default",
     title: title || "Hello 👋",
-    body: body || "Broadcast from in-memory server",
+    body: body || "Broadcast from Render",
     data: data || {},
   }));
 
@@ -48,7 +42,6 @@ app.post("/send", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
   console.log(`🚀 Expo Push Server running on port ${PORT}`);
 });
