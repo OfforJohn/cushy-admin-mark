@@ -3,5 +3,8 @@
     "body-parser": "^2.2.2",
     "express": "^5.2.1",
     "node-fetch": "^3.3.2"
+  },
+  "scripts": {
+    "start": "node send-expo-notification.js"
   }
 }
