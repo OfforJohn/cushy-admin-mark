@@ -17,10 +17,7 @@ app.post("/register", (req, res) => {
 });
 
 app.get("/expo-tokens", (req, res) => {
-  res.json({
-    count: expoTokens.size,
-    tokens: [...expoTokens],
-  });
+  res.json({ tokens: Array.from(expoTokens) });
 });
 
 
