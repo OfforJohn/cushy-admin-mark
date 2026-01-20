@@ -1,7 +1,12 @@
 // @ts-nocheck
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
+
+// Enable CORS for your frontend
+app.use(cors({ origin: "http://localhost:5173" }));
+
 app.use(express.json());
 
 const expoTokens = new Set();
@@ -19,7 +24,6 @@ app.post("/register", (req, res) => {
 app.get("/expo-tokens", (req, res) => {
   res.json({ tokens: Array.from(expoTokens) });
 });
-
 
 app.post("/send", async (req, res) => {
   const { title, body, data } = req.body;
