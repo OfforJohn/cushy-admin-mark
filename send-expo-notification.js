@@ -16,6 +16,14 @@ app.post("/register", (req, res) => {
   res.json({ success: true });
 });
 
+app.get("/expo-tokens", (req, res) => {
+  res.json({
+    count: expoTokens.size,
+    tokens: [...expoTokens],
+  });
+});
+
+
 app.post("/send", async (req, res) => {
   const { title, body, data } = req.body;
 
