@@ -47,6 +47,8 @@ app.post("/send", async (req, res) => {
   res.json({ sent: messages.length, data: responseData });
 });
 
-app.listen(3000, () => {
-  console.log("🚀 Expo Push Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Expo Push Server running on port ${PORT}`);
 });
