@@ -72,25 +72,31 @@ app.post("/send-system", async (req, res) => {
 /* ------------------ IN-APP (SILENT) ------------------ */
 
 app.post("/send-in-app", async (req, res) => {
-  const { title, body, route, url, image, extraInfo, data } = req.body;
-
- const messages = [...expoTokens].map((token) => ({
-  to: token,
-  sound: null,
-  priority: "high",
-  data: {
-    type: "IN_APP",
+  const {
     title,
-    body,
-    route: route || null,
-    url: url || null,
-    image: image || null,
-    extraInfo: extraInfo || null,
-  },
-}));
+    subtitle,
+    features,
+    route,
+    url,
+  } = req.body;
 
+  const messages = [...expoTokens].map((token) => ({
+    to: token,
+    sound: null,            // silent
+    priority: "high",
+    data: {
+      type: "IN_APP",
+      title: title || "Notification",
+      subtitle: subtitle || null,
+      features: Array.isArray(features) ? features : null,
+      route: route || null,
+      url: url || null,
+    },
+  }));
 
-  if (!messages.length) return res.json({ sent: 0 });
+  if (!messages.length) {
+    return res.json({ sent: 0 });
+  }
 
   const response = await fetch("https://exp.host/--/api/v2/push/send", {
     method: "POST",
@@ -101,6 +107,7 @@ app.post("/send-in-app", async (req, res) => {
   const responseData = await response.json();
   res.json({ sent: messages.length, data: responseData });
 });
+
 
 
 
