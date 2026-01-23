@@ -1,7 +1,6 @@
 // @ts-nocheck
 const express = require("express");
 const cors = require("cors");
-const fetch = require("node-fetch");
 
 const app = express();
 
@@ -55,15 +54,10 @@ app.post("/send-system", async (req, res) => {
     sound: "default",
     title: title || "System Notification",
     body: body || "This is a system notification",
-    data: {
-      ...data,
-      type: "SYSTEM",
-    },
+    data: { ...data, type: "SYSTEM" },
   }));
 
-  if (!messages.length) {
-    return res.json({ sent: 0 });
-  }
+  if (!messages.length) return res.json({ sent: 0 });
 
   const response = await fetch("https://exp.host/--/api/v2/push/send", {
     method: "POST",
@@ -82,20 +76,13 @@ app.post("/send-in-app", async (req, res) => {
 
   const messages = [...expoTokens].map((token) => ({
     to: token,
-    sound: null,   // 🔕 silent
-    title: null,   // 🚫 no OS UI
+    sound: null,
+    title: null,
     body: null,
-    data: {
-      ...data,
-      type: "IN_APP",
-      title,
-      body,
-    },
+    data: { ...data, type: "IN_APP", title, body },
   }));
 
-  if (!messages.length) {
-    return res.json({ sent: 0 });
-  }
+  if (!messages.length) return res.json({ sent: 0 });
 
   const response = await fetch("https://exp.host/--/api/v2/push/send", {
     method: "POST",
