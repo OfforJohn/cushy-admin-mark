@@ -74,22 +74,21 @@ app.post("/send-system", async (req, res) => {
 app.post("/send-in-app", async (req, res) => {
   const { title, body, route, url, image, extraInfo, data } = req.body;
 
-  const messages = [...expoTokens].map((token) => ({
-    to: token,
-    title, // top-level title (optional, helps the app)
-    body,  // top-level body (optional)
-    data: {
-      type: "IN_APP",
-      title,
-      body,
-      route: route || null,
-      url: url || null,
-      image: image || null,
-      extraInfo: extraInfo || null,
-      ...data, // any other custom fields
-    },
-    sound: null, // silent notification
-  }));
+ const messages = [...expoTokens].map((token) => ({
+  to: token,
+  sound: null,
+  priority: "high",
+  data: {
+    type: "IN_APP",
+    title,
+    body,
+    route: route || null,
+    url: url || null,
+    image: image || null,
+    extraInfo: extraInfo || null,
+  },
+}));
+
 
   if (!messages.length) return res.json({ sent: 0 });
 
