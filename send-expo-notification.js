@@ -76,23 +76,30 @@ app.post("/send-in-app", async (req, res) => {
 
   const messages = [...expoTokens].map((token) => ({
     to: token,
-    sound: null,
-    title: null,
-    body: null,
-    data: { ...data, type: "IN_APP", title, body },
+    data: {
+      ...data,
+      type: "IN_APP",
+      title,
+      body,
+    },
   }));
 
-  if (!messages.length) return res.json({ sent: 0 });
+  if (!messages.length) {
+    return res.json({ sent: 0 });
+  }
 
   const response = await fetch("https://exp.host/--/api/v2/push/send", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(messages),
   });
 
   const responseData = await response.json();
   res.json({ sent: messages.length, data: responseData });
 });
+
 
 /* ------------------ START SERVER ------------------ */
 
