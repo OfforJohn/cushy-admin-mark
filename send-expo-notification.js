@@ -141,14 +141,14 @@ app.post("/test/logistics-banner", async (req, res) => {
       description: "Experience lightning-fast package delivery with real-time tracking",
       icon: "truck",
       backgroundColor: "green",
-      badges: ["New", "Available Now"],
-      features: [
+      badges: JSON.stringify(["New", "Available Now"]),
+      features: JSON.stringify([
         { icon: "truck", text: "Express Delivery", color: "#10B981" },
         { icon: "shield", text: "Full Coverage", color: "#3B82F6" },
         { icon: "lightning", text: "Real-time Tracking", color: "#F59E0B" },
         { icon: "star", text: "Dedicated Support", color: "#8B5CF6" },
-      ],
-      cta: { text: "Explore Features", icon: "arrow-forward" },
+      ]),
+      cta: JSON.stringify({ text: "Explore Features", icon: "arrow-forward" }),
       route: "/(logistics)",
     },
   }));
@@ -176,14 +176,14 @@ app.post("/test/wallet-banner", async (req, res) => {
       description: "Enjoy seamless transactions with new payment methods",
       icon: "wallet",
       backgroundColor: "purple",
-      badges: ["Premium", "Limited Offer"],
-      features: [
+      badges: JSON.stringify(["Premium", "Limited Offer"]),
+      features: JSON.stringify([
         { icon: "send", text: "Send Globally", color: "#8B5CF6" },
         { icon: "shield", text: "Bank-Level Security", color: "#6366F1" },
         { icon: "discount", text: "Zero Fees", color: "#A855F7" },
         { icon: "heart", text: "Rewards Program", color: "#D946EF" },
-      ],
-      cta: { text: "Upgrade Now", icon: "arrow-forward" },
+      ]),
+      cta: JSON.stringify({ text: "Upgrade Now", icon: "arrow-forward" }),
       route: "/(wallet)",
     },
   }));
@@ -211,13 +211,13 @@ app.post("/test/promo-banner", async (req, res) => {
       description: "Get up to 50% off on your next purchase",
       icon: "gift",
       backgroundColor: "blue",
-      badges: ["50% OFF", "Ends Today"],
-      features: [
+      badges: JSON.stringify(["50% OFF", "Ends Today"]),
+      features: JSON.stringify([
         { icon: "discount", text: "50% Discount", color: "#2563EB" },
         { icon: "gift", text: "Free Shipping", color: "#0EA5E9" },
         { icon: "star", text: "Loyalty Points", color: "#06B6D4" },
-      ],
-      cta: { text: "Claim Offer", icon: "gift" },
+      ]),
+      cta: JSON.stringify({ text: "Claim Offer", icon: "gift" }),
       route: "/",
     },
   }));
