@@ -86,24 +86,27 @@ app.post("/send-in-app", async (req, res) => {
     url,
   } = req.body;
 
+  // Only include non-null values
+  const notificationData = {
+    type: "IN_APP",
+    title: title || "Notification",
+    ...(subtitle && { subtitle }),
+    ...(description && { description }),
+    ...(icon && { icon }),
+    ...(backgroundColor && { backgroundColor }),
+    ...(image && { image }),
+    ...(badges && Array.isArray(badges) && { badges }),
+    ...(features && Array.isArray(features) && { features: JSON.stringify(features) }),
+    ...(cta && { cta: JSON.stringify(cta) }),
+    ...(route && { route }),
+    ...(url && { url }),
+  };
+
   const messages = [...expoTokens].map((token) => ({
     to: token,
-    sound: null,            // silent
+    sound: null,
     priority: "high",
-    data: {
-      type: "IN_APP",
-      title: title || "Notification",
-      subtitle: subtitle || null,
-      description: description || null,
-      icon: icon || "wallet",
-      backgroundColor: backgroundColor || "blue",
-      image: image || null,
-      badges: Array.isArray(badges) ? badges : null,
-      features: Array.isArray(features) ? features : null,
-      cta: cta || { text: "Tap to continue", icon: "arrow-forward" },
-      route: route || null,
-      url: url || null,
-    },
+    data: notificationData,
   }));
 
   if (!messages.length) {
