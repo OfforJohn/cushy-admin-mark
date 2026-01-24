@@ -69,13 +69,19 @@ app.post("/send-system", async (req, res) => {
   res.json({ sent: messages.length, data: responseData });
 });
 
-/* ------------------ IN-APP (SILENT) ------------------ */
+/* ------------------ IN-APP (RICH BANNER) ------------------ */
 
 app.post("/send-in-app", async (req, res) => {
   const {
     title,
     subtitle,
+    description,
+    icon,
+    backgroundColor,
+    image,
+    badges,
     features,
+    cta,
     route,
     url,
   } = req.body;
@@ -88,7 +94,13 @@ app.post("/send-in-app", async (req, res) => {
       type: "IN_APP",
       title: title || "Notification",
       subtitle: subtitle || null,
+      description: description || null,
+      icon: icon || "wallet",
+      backgroundColor: backgroundColor || "blue",
+      image: image || null,
+      badges: Array.isArray(badges) ? badges : null,
       features: Array.isArray(features) ? features : null,
+      cta: cta || { text: "Tap to continue", icon: "arrow-forward" },
       route: route || null,
       url: url || null,
     },
@@ -110,6 +122,112 @@ app.post("/send-in-app", async (req, res) => {
 
 
 
+
+/* ------------------ EXAMPLE ENDPOINTS FOR TESTING ------------------ */
+
+// Test rich green banner
+app.post("/test/logistics-banner", async (req, res) => {
+  const messages = [...expoTokens].map((token) => ({
+    to: token,
+    sound: null,
+    priority: "high",
+    data: {
+      type: "IN_APP",
+      title: "New Logistics Feature",
+      subtitle: "Send packages faster",
+      description: "Experience lightning-fast package delivery with real-time tracking",
+      icon: "truck",
+      backgroundColor: "green",
+      badges: ["New", "Available Now"],
+      features: [
+        { icon: "truck", text: "Express Delivery", color: "#10B981" },
+        { icon: "shield", text: "Full Coverage", color: "#3B82F6" },
+        { icon: "lightning", text: "Real-time Tracking", color: "#F59E0B" },
+        { icon: "star", text: "Dedicated Support", color: "#8B5CF6" },
+      ],
+      cta: { text: "Explore Features", icon: "arrow-forward" },
+      route: "/(logistics)",
+    },
+  }));
+
+  const response = await fetch("https://exp.host/--/api/v2/push/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(messages),
+  });
+
+  const responseData = await response.json();
+  res.json({ sent: messages.length, data: responseData });
+});
+
+// Test rich purple banner
+app.post("/test/wallet-banner", async (req, res) => {
+  const messages = [...expoTokens].map((token) => ({
+    to: token,
+    sound: null,
+    priority: "high",
+    data: {
+      type: "IN_APP",
+      title: "Wallet Upgrade Available",
+      subtitle: "Enhanced features unlocked",
+      description: "Enjoy seamless transactions with new payment methods",
+      icon: "wallet",
+      backgroundColor: "purple",
+      badges: ["Premium", "Limited Offer"],
+      features: [
+        { icon: "send", text: "Send Globally", color: "#8B5CF6" },
+        { icon: "shield", text: "Bank-Level Security", color: "#6366F1" },
+        { icon: "discount", text: "Zero Fees", color: "#A855F7" },
+        { icon: "heart", text: "Rewards Program", color: "#D946EF" },
+      ],
+      cta: { text: "Upgrade Now", icon: "arrow-forward" },
+      route: "/(wallet)",
+    },
+  }));
+
+  const response = await fetch("https://exp.host/--/api/v2/push/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(messages),
+  });
+
+  const responseData = await response.json();
+  res.json({ sent: messages.length, data: responseData });
+});
+
+// Test rich blue banner
+app.post("/test/promo-banner", async (req, res) => {
+  const messages = [...expoTokens].map((token) => ({
+    to: token,
+    sound: null,
+    priority: "high",
+    data: {
+      type: "IN_APP",
+      title: "Special Promotion",
+      subtitle: "Limited time only",
+      description: "Get up to 50% off on your next purchase",
+      icon: "gift",
+      backgroundColor: "blue",
+      badges: ["50% OFF", "Ends Today"],
+      features: [
+        { icon: "discount", text: "50% Discount", color: "#2563EB" },
+        { icon: "gift", text: "Free Shipping", color: "#0EA5E9" },
+        { icon: "star", text: "Loyalty Points", color: "#06B6D4" },
+      ],
+      cta: { text: "Claim Offer", icon: "gift" },
+      route: "/",
+    },
+  }));
+
+  const response = await fetch("https://exp.host/--/api/v2/push/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(messages),
+  });
+
+  const responseData = await response.json();
+  res.json({ sent: messages.length, data: responseData });
+});
 
 /* ------------------ START SERVER ------------------ */
 
