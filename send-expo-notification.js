@@ -8,6 +8,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "https://cagconsole.cushyaccess.com",
   "https://cushy-adminaa.vercel.app",
 ];
 
@@ -108,6 +109,9 @@ app.post("/send-in-app", async (req, res) => {
     priority: "high",
     data: notificationData,
   }));
+
+  console.log("📤 Sending notification to", messages.length, "device(s)");
+  console.log("📋 Notification data:", JSON.stringify(notificationData, null, 2));
 
   if (!messages.length) {
     return res.json({ sent: 0 });
